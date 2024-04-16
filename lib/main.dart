@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:footware/controllers/add_product_controller.dart';
 import 'package:footware/pages/Home_page.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:get/get_navigation/src/root/get_material_app.dart';
+import 'package:get/get.dart';
+import 'controllers/home_controller.dart';
 import 'firebase_options.dart';
 
 void main() async {
@@ -9,6 +11,9 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+  //registering homecontroller
+  Get.put(HomeController());
+  Get.put(AddProductController());
   runApp(const FootWare());
 }
 
