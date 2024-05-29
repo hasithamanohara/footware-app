@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:footware/controllers/add_product_controller.dart';
+import 'package:footware/controllers/home_controller.dart';
 import 'package:footware/widgets/drop_down_btn.dart';
 import 'package:get/get.dart';
 
@@ -12,12 +13,11 @@ class AddProduct extends StatefulWidget {
 
 class _AddProductState extends State<AddProduct> {
   final List<String> items = ['item 1', 'item 2', 'item 3', 'item 4'];
-
   final List<String> offers = ['false', 'true'];
 
   @override
   Widget build(BuildContext context) {
-    return GetBuilder<AddProductController>(builder: (ctrl) {
+    return GetBuilder<HomeController>(builder: (ctrl) {
       return Scaffold(
         appBar: AppBar(
           title: const Text('Add Product'),
@@ -37,10 +37,11 @@ class _AddProductState extends State<AddProduct> {
               const SizedBox(height: 20),
 
               //product name
-              const Padding(
-                padding: EdgeInsets.all(10.0),
+              Padding(
+                padding: const EdgeInsets.all(10.0),
                 child: TextField(
-                  decoration: InputDecoration(
+                  controller: ctrl.nameController,
+                  decoration: const InputDecoration(
                     hintText: 'Product Name',
                     labelText: 'Product Name',
                     border: OutlineInputBorder(
@@ -51,11 +52,12 @@ class _AddProductState extends State<AddProduct> {
               ),
 
               //description
-              const Padding(
-                padding: EdgeInsets.all(10.0),
+              Padding(
+                padding: const EdgeInsets.all(10.0),
                 child: TextField(
+                  controller: ctrl.descriptionController,
                   maxLines: 4,
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     hintText: 'Product Description',
                     labelText: 'Product Description',
                     border: OutlineInputBorder(
@@ -66,10 +68,11 @@ class _AddProductState extends State<AddProduct> {
               ),
 
               //Product image
-              const Padding(
-                padding: EdgeInsets.all(10.0),
+              Padding(
+                padding: const EdgeInsets.all(10.0),
                 child: TextField(
-                  decoration: InputDecoration(
+                  controller: ctrl.imageController,
+                  decoration: const InputDecoration(
                     hintText: 'Product Image',
                     labelText: 'Enter Your Product Image URL',
                     border: OutlineInputBorder(
@@ -80,10 +83,11 @@ class _AddProductState extends State<AddProduct> {
               ),
 
               //product name
-              const Padding(
-                padding: EdgeInsets.all(10.0),
+              Padding(
+                padding: const EdgeInsets.all(10.0),
                 child: TextField(
-                  decoration: InputDecoration(
+                  controller: ctrl.priceController,
+                  decoration: const InputDecoration(
                     hintText: 'Product Price',
                     labelText: 'Product Price',
                     border: OutlineInputBorder(
@@ -102,17 +106,19 @@ class _AddProductState extends State<AddProduct> {
                         child: DropDownCustomWidget(
                       items: items,
                       onSelected: (selectedValue) {
-                        print(selectedValue);
+                        ctrl.catogery = selectedValue;
+                        ctrl.update();
                       },
-                      title: 'Category',
+                      title: ctrl.catogery,
                     )),
                     Flexible(
                         child: DropDownCustomWidget(
                       items: items,
                       onSelected: (selectedValue) {
-                        print(selectedValue);
+                        ctrl.brand = selectedValue;
+                        ctrl.update();
                       },
-                      title: 'Brand',
+                      title: ctrl.brand,
                     )),
                   ],
                 ),
@@ -128,9 +134,11 @@ class _AddProductState extends State<AddProduct> {
                 child: DropDownCustomWidget(
                   items: offers,
                   onSelected: (selectedValue) {
-                    print(selectedValue);
+                    ctrl.offer =
+                        bool.tryParse(selectedValue ?? 'false') ?? false;
+                    ctrl.update();
                   },
-                  title: 'Offers ?',
+                  title: 'Offers ? ${ctrl.offer}',
                 ),
               ),
 
